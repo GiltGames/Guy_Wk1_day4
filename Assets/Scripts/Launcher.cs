@@ -17,6 +17,8 @@ public class Launcher : MonoBehaviour
     private Vector3 newscale;
     private Vector3 oldscale;
     private bool Fired = false;
+    public AudioSource gunSound;
+    public AudioClip gunClip;
     
     // rigidbody is a link to the shot
     Rigidbody2D rb;
@@ -105,7 +107,7 @@ public class Launcher : MonoBehaviour
                 // Debug.Log(force); Debug.Log(newscale);
                 rb.AddForce(force,ForceMode2D.Impulse);
 
-
+                AudioSource.PlayClipAtPoint(gunClip,startPos);
 
 
             }

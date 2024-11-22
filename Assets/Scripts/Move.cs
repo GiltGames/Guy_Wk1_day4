@@ -8,6 +8,8 @@ public class Move : MonoBehaviour
     public float alienLL = -10;
     public Score Scr;
     Vector3 strtPosA;
+    public AudioSource Exp;
+    public AudioClip ExpSound;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -33,8 +35,12 @@ public class Move : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        AudioSource.PlayClipAtPoint(ExpSound,transform.position);
+        
         transform.position = new Vector3(alienLL, strtPosA.y, 0);
         Scr.gameScore += 1;
-        Debug.Log("Change: " + strtPosA);
+
+    
+      //  Debug.Log("Change: " + strtPosA);
     }
 }
