@@ -4,21 +4,35 @@ using UnityEngine.UIElements;
 
 public class Launcher : MonoBehaviour
 {
-    public float Llim = -10;
-    public float Win = 0;
+    //public float Llim = -10;
+  //  public float Win = 0;
+
+    //parameters for sensitivity of launcher controls
     public float LScale = 100;
     public float angle = 0;
-    public float scaleInc = 0.02f;
-    public float angleInc = 0.2f;
+    public float scaleInc = 0.01f;
+    public float angleInc = 0.3f;
+    
+    //limits on launcher power
     public float maxPower = 2;
     public float minPower = 0.5f;
+
+    //limits on angle of launcher
+    public float maxangle = -0.6f;
+    public float minangle = -0.1f;
+    public float angle1;
+    
+    // for control of angle and power
     private float rotChk;
     private float scalChk;
     private Vector3 newscale;
     private Vector3 oldscale;
-    private bool Fired = false;
+    // private bool Fired = false;
     public AudioSource gunSound;
     public AudioClip gunClip;
+
+    // tracks shot and moves it back if it goes off the bottom
+    public OutofBound OOB;
     
     // rigidbody is a link to the shot
     Rigidbody2D rb;
@@ -30,6 +44,8 @@ public class Launcher : MonoBehaviour
 
     public GameObject targetObjectPower;
     public GameObject targetObjectShot;
+
+    //link to power for display
     public PowerGShow Pwr;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -52,8 +68,28 @@ public class Launcher : MonoBehaviour
 
         //rotates launcher
         rotChk = Input.GetAxis("Horizontal");
+        angle1 = transform.localRotation.z;
+        // Debug.Log("Rotation - Key " + rotChk + "....Min:" + minangle + "....Max:" + maxangle + "... angle" + angle1);
+       
+        //checks for limits on lancher mve
+        if (rotChk < 0)
+        {
 
-        transform.Rotate(0,0,rotChk * -angleInc);
+            if (angle1 < minangle)
+            {
+
+                transform.Rotate(0, 0, rotChk * -angleInc);
+
+            }
+        }
+        if (rotChk > 0)
+        { 
+            if (angle1 > maxangle)
+            {
+                transform.Rotate(0, 0, rotChk * -angleInc);
+            }
+
+        }
 
         //scales the power
 
@@ -85,13 +121,15 @@ public class Launcher : MonoBehaviour
            targetObjectPower.transform.localScale = newscale;
            Pwr.PowerG = Mathf.RoundToInt(newscale.x*100);
         }
-
+        Debug.Log("Fired" + OOB.fired);
         //fire key
 
         if (Input.GetKeyDown(KeyCode.Space))
-            { if (Fired == false)
+        // whether or not the shot is fired is by variable in OutofBound script  
+        
+        { if (OOB.fired == false)
             {
-               // Fired = true;
+               OOB.fired = true;
 
                 //Debug.Log("FIRE");
 
