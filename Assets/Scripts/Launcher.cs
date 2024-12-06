@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.Rendering;
 using UnityEngine.UIElements;
 // This is the main script for the game
 
@@ -153,8 +155,11 @@ public class Launcher : MonoBehaviour
 
 
         }
-
-
+        //USer can End Game
+        if (Input.GetKeyDown (KeyCode.Escape))
+        {
+            SceneManager.LoadScene(0);
+        }
 
         /*
 
